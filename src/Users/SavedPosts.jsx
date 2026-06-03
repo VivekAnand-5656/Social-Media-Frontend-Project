@@ -12,6 +12,8 @@ import { FaRegCommentDots } from "react-icons/fa6";
 import { BiSolidSend } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 
+import blankuser from '../assets/blankuser.png'
+
 const SavedPosts = () => {
     const { token, userdata } = useContext(AuthContext)
     const [saveposts, setSaveposts] = useState([])
@@ -189,7 +191,21 @@ const SavedPosts = () => {
                             <div className='flex gap-2 p-2 justify-between items-center'>
 
                                 <span className='flex items-center gap-2'>
-                                    <FaUserLarge />
+                                    {
+                                        post.user && "image_url" in post.user ? (
+                                            <img
+                                                src={post.user.image_url}
+                                                alt="userimage"
+                                                className="w-5 h-5 rounded-full "
+                                            />
+                                        ) : (
+                                            <img
+                                                src={blankuser}
+                                                alt="userimage"
+                                                className="w-5 h-5 rounded-full "
+                                            />
+                                        )
+                                    }
                                     <p className='text-[0.8rem]' >{post.user.username || "Username"}</p>
                                 </span>
 
@@ -218,11 +234,19 @@ const SavedPosts = () => {
                             {/* Image */}
                             <div className='w-full h-[80%] flex flex-col items-center'>
 
-                                <img
-                                    src={post.post_url}
-                                    alt="post"
-                                    className="w-full h-[70%] rounded-xl object-contain"
-                                />
+                                {
+                                    post.post_url.endsWith(".mp4") ? (
+
+                                        <video src={post.post_url} controls
+                                            className='w-full h-[70%] rounded-xl object-contain'></video>
+                                    ) : (
+                                        <img
+                                            src={post.post_url}
+                                            alt="post"
+                                            className="w-full h-[70%] rounded-xl object-contain"
+                                        />
+                                    )
+                                }
 
                                 {/* Actions */}
                                 <div className="p-4 w-full flex">

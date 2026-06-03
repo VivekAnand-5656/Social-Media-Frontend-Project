@@ -14,20 +14,26 @@ import { RiCloseCircleFill } from "react-icons/ri";
 import { FaRegCommentDots } from "react-icons/fa6";
 import { BiSolidSend } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
+import { FaSearch } from "react-icons/fa";
+import { FaRegSave } from "react-icons/fa";
+import { IoSaveSharp } from "react-icons/io5";
+
+import blankuser from '../assets/blankuser.png'
+
+
+
+
 
 const Home = () => {
-  const { token, userdata, setUserdata } = useContext(AuthContext) 
-  const [formdata,setFormdata] = useState({
-    comment:""
-  }) 
+  const { token, userdata, setUserdata, postUserId, setPostUserId } = useContext(AuthContext)
+  const [formdata, setFormdata] = useState({
+    comment: ""
+  })
   const navigate = useNavigate()
 
   const [posts, setPosts] = useState([])
   const [selectlikepost, setSelectlikepost] = useState(null)
   const [selectcommentpost, setSelectcommentpost] = useState(null)
-  const [searchuser, setSearchuser] = useState(null)
-  // const [isFollow,setIsFollow] = useState(null)
-  // const [isLiked,setIsLiked] = useState(null)
   const apibase = "https://socialmediaproject-6sl8.onrender.com"
 
   // ------ Fetch User -------
@@ -41,28 +47,25 @@ const Home = () => {
           }
         }
       )
-
-      setUserdata(response.data) 
-      console.log("User Data",response.data);
-      
-      
-
+      setUserdata(response.data)
+      console.log("User Data", response.data);
     } catch (error) {
       console.log(`Error:- ${error}`)
     }
   }
-   
+
 
   // -------- Get All Posts --------
   const getPosts = async () => {
+
     try {
       const response = await axios.get(
         `${apibase}/public/allposts`
       )
       const curposts = response.data
-             
+
       setPosts(response.data)
-     
+
 
     } catch (error) {
       console.log("Error:", error)
@@ -80,7 +83,7 @@ const Home = () => {
             Authorization: `Bearer ${token}`
           }
         }
-      )       
+      )
       console.log("Post liked");
       await getPosts()
 
@@ -92,7 +95,7 @@ const Home = () => {
   // ------------ Unlike Posts --------
   const unlikepost = async (postId) => {
     try {
-      const response = await axios.put(`${apibase}/user/unlikepost/${postId}`, {}, 
+      const response = await axios.put(`${apibase}/user/unlikepost/${postId}`, {},
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -100,25 +103,61 @@ const Home = () => {
         }
       )
       console.log("Unliked Post");
-      
+
       await getPosts()
     } catch (error) {
       console.log(`Error:- ${error}`);
 
     }
   }
+  // ------------------ Save Post ------------
+  const savePost = async (postId) => {
+    try {
+      const response = await axios.put(`${apibase}/user/savepost/${postId}`, {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      getPosts()
+      console.log("Post saved")
+    } catch (error) {
+      console.log(`Error:- ${error}`)
+      console.log("Post already saved");
+
+    }
+  }
+  // ------------------- unsave post -----------
+  const unSavePost = async (postId) => {
+    try {
+      const response = await axios.put(`${apibase}/user/unsavepost/${postId}`, {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      getPosts()
+      console.log("Post UnSaved")
+    } catch (error) {
+      console.log(`Error:- ${error}`)
+      console.log("Already unsaved post");
+
+    }
+  }
   // ---------- Comment Post --------
-  const handlechange=(e)=>{
+  const handlechange = (e) => {
     setFormdata(
-      {...formdata,[e.target.name]:e.target.value}
+      { ...formdata, [e.target.name]: e.target.value }
     )
   }
-  const commentPost = async (postId) =>{
+  const commentPost = async (postId) => {
     try {
-      const response = await axios.put(`${apibase}/user/commentpost/${postId}`,formdata,
+      const response = await axios.put(`${apibase}/user/commentpost/${postId}`, formdata,
         {
-          headers:{
-            Authorization:`Bearer ${token}`
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         }
       )
@@ -126,50 +165,72 @@ const Home = () => {
       console.log("Comment Successfully")
       alert("Comment Successfully")
       setFormdata({
-        comment:""
+        comment: ""
       })
-      
+
     } catch (error) {
       console.log(`Error:- ${error}`)
       console.log("Comment not posted");
-      
+
     }
   }
   // ------- Follow --------
-  const followpost = async (userId)=>{
+  const followpost = async (userId) => {
     try {
-      const response = await axios.put(`${apibase}/user/follow/${userId}`,{},
+      const response = await axios.put(`${apibase}/user/follow/${userId}`, {},
         {
-          headers:{
-            Authorization:`Bearer ${token}`
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         }
-      ) 
+      )
       getPosts()
       console.log("Follow Successfull");
       alert("Follow Successfully")
     } catch (error) {
-      console.log(`Error:- ${error}`); 
+      console.log(`Error:- ${error}`);
     }
   }
   // ----------- Unfollow -----------
-  const unfollowPost = async (userId)=>{
+  const unfollowPost = async (userId) => {
     try {
-      const response = await axios.put(`${apibase}/user/unfollow/${userId}`,{},
+      const response = await axios.put(`${apibase}/user/unfollow/${userId}`, {},
         {
-          headers:{
-            Authorization:`Bearer ${token}`
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         }
       )
       getPosts()
       console.log("Unfollow Successfully");
       alert("Unfollow Successfully")
-      
+
     } catch (error) {
       console.log(`Error:- ${error}`);
     }
   }
+  // ------------------- Search Users  --------------------
+  const [searchUsers, setSearchUsers] = useState([])
+  const [search, setSearch] = useState("")
+  const [showUsers, setShowUsers] = useState(false)
+  const searchUserData = async () => {
+    try {
+      const response = await axios.get(`${apibase}/user/findusers?name=${search}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      console.log("Search Data:- ", response.data)
+      console.log("Search success")
+      setSearchUsers(response.data)
+      setShowUsers(true)
+    } catch (error) {
+      console.log(`Error:- ${error}`)
+    }
+  }
+
   // ------------------------------------
   useEffect(() => {
     getPosts()
@@ -177,8 +238,15 @@ const Home = () => {
     if (token) {
       fetchUser()
     }
-  }, []) 
-  
+    const handleClick = () => setShowUsers(false);
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [])
+
 
   // -------- Format Date --------
   const datetime = (time) => {
@@ -198,19 +266,50 @@ const Home = () => {
         {/* Search */}
         <div className='bg-white w-full h-[10%] rounded-2xl flex justify-around items-center'>
           <input
-            type="search"
+            type="text"
+            name='search'
+            value={search}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                searchUserData()
+              }
+            }}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder='Search users.....'
-            className='rounded-2xl w-[75%] p-2 border-2'
+            className='rounded-2xl w-[60%] p-2 border-2'
           />
+          <button
+            onClick={searchUserData}
+            className=' p-1.5 bg-[#c0b8b8] rounded-2xl cursor-pointer ' ><FaSearch /></button>
+          {/* .------------ Show users ---------- */}
+          {showUsers && (
+            <div className="absolute top-12 left-50 w-[50%] bg-white border rounded shadow-lg max-h-60 overflow-y-auto z-50">
+              {searchUsers.length > 0 ? (
+                searchUsers.map((user) => (
+                  <div
+                    key={user._id}
+                    className="flex justify-between items-center p-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    <p>{user.name}</p>
+                    <button className="bg-blue-500 text-white px-2 py-1 rounded">
+                      Follow
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p className="p-2 text-center">No users found</p>
+              )}
+            </div>
+          )}
 
-          <button 
-          onClick={()=>navigate("/createpost")}
-          className='rounded-2xl w-[20%] p-2 border-2'>
+          <button
+            onClick={() => navigate("/createpost")}
+            className='rounded-2xl w-[20%] p-2 border-2'>
             Create Post
           </button>
         </div>
 
-        {/* Feed */}
+        {/* ------------- Feed ------------------- */}
         <div className='feed bg-[#b8fff8] p-2 w-[80%] h-[90%] flex flex-col items-center gap-5 rounded-2xl overflow-scroll'>
 
           {posts?.map((post) => {
@@ -221,7 +320,9 @@ const Home = () => {
             const isFollow = post.user.followers?.some(
               (fl) => fl.user_id === userdata?._id
             )
-
+            const isSaved = userdata?.savedPosts?.some(
+              (save) => save.post_id === post._id
+            )
             return (
               <div
                 key={post._id}
@@ -231,46 +332,72 @@ const Home = () => {
                 {/* Header */}
                 <div className='flex gap-2 p-2 justify-between items-center'>
 
-                  <span className='flex items-center gap-2'>
-                    <FaUserLarge />
+                  <span className='flex items-center gap-2' onClick={() => {
+                    setPostUserId(post.user._id),
+                      navigate("/userprofile")
+                  }} >
+                    {
+                      post.user && "image_url" in post.user ? (
+                        <img
+                          src={post.user.image_url}
+                          alt="userimage"
+                          className="w-5 h-5 rounded-full "
+                        />
+                      ) : (
+                        <img
+                          src={blankuser}
+                          alt="userimage"
+                          className="w-5 h-5 rounded-full "
+                        />
+                      )
+                    }
                     <p>{post.user.username || "Username"}</p>
                   </span>
 
                   {/* ----- Follow ------- */}
                   {
-                    isFollow?(
-                      <button 
-                  onClick={()=>unfollowPost(post.user_id)}
-                  className='flex items-center cursor-pointer  gap-1'>
-                     Following
-                  </button>
+                    isFollow ? (
+                      <button
+                        onClick={() => unfollowPost(post.user_id)}
+                        className='flex items-center cursor-pointer  gap-1'>
+                        Following
+                      </button>
                     )
-                    :(
-                      <button 
-                  onClick={()=>followpost(post.user_id)}
-                  className='flex items-center cursor-pointer gap-1'>
-                    Follow
-                  </button>
-                    )
+                      : (
+                        <button
+                          onClick={() => followpost(post.user_id)}
+                          className='flex items-center cursor-pointer gap-1'>
+                          Follow
+                        </button>
+                      )
                   }
 
-                  
+
 
                 </div>
 
                 {/* Image */}
                 <div className='w-full h-[80%] flex flex-col items-center'>
+                  {
+                    post.post_url.endsWith(".mp4") ? (
 
-                  <img
-                    src={post.post_url}
-                    alt="post"
-                    className="w-full h-[70%] rounded-xl object-contain"
-                  />
+                      <video src={post.post_url} controls
+                        className='w-full h-[70%] rounded-xl object-contain'></video>
+                    ) : (
+                      <img
+                        src={post.post_url}
+                        alt="post"
+                        className="w-full h-[70%] rounded-xl object-contain"
+                      />
+                    )
+                  }
+
+
 
                   {/* Actions */}
                   <div className="p-4 w-full flex">
 
-                    <div className="flex gap-4 mt-2">
+                    <div className="flex gap-4 mt-2 items-center justify-between w-full ">
 
                       {/* Like */}
                       <span className='flex justify-center cursor-pointer items-center gap-2'>
@@ -311,7 +438,7 @@ const Home = () => {
                         </div>
                       }
 
-                      {/* Comments */}
+                      {/* -------------------- Comments --------------------- */}
                       <span
                         onClick={() => setSelectcommentpost(post)}
                         className='flex justify-center cursor-pointer items-center gap-2'>
@@ -337,19 +464,29 @@ const Home = () => {
                                 ))
                             }
                           </div>
-                          {/* =========== Comment baki hia ===== */}
                           <div className=' justify-self-end flex justify-between items-center ' >
                             <input type="text" name='comment' placeholder='Add comment..........'
-                            value={formdata.comment}
-                            onChange={handlechange}
+                              value={formdata.comment}
+                              onChange={handlechange}
                               className=' border w-[90%] p-1.5 rounded-2xl ' />
                             <button className=' cursor-pointer  rounded-full text-4xl '
-                            onClick={()=>commentPost(selectcommentpost._id)}
+                              onClick={() => commentPost(selectcommentpost._id)}
                             ><BiSolidSend /></button>
                           </div>
                         </div>
                       }
+                      {
+                        isSaved ? (
+                          <IoSaveSharp
+                            onClick={() => unSavePost(post._id)}
+                            className=' cursor-pointer  ' />
+                        ) : (
 
+                          <FaRegSave
+                            onClick={() => savePost(post._id)}
+                            className=' cursor-pointer  ' />
+                        )
+                      }
                     </div>
 
                   </div>

@@ -11,6 +11,8 @@ export const AuthProvider =({children})=>{
     const [isshowlogin,setIsshowlogin] = useState(false)
     // ----- Curent User ----
     const [userdata, setUserdata] = useState([])
+    const [postUserId,setPostUserId] = useState(null)
+    const [allusers,setAllusers] = useState([])
     
     
     useEffect(()=>{
@@ -37,7 +39,7 @@ export const AuthProvider =({children})=>{
     return (
         <AuthContext.Provider
         value={{
-            changepage,setChangepage,login,logout,islogin,setIslogin,isshowlogin,setIsshowlogin,token,userdata, setUserdata
+            changepage,setChangepage,login,logout,islogin,setIslogin,isshowlogin,setIsshowlogin,token,userdata, setUserdata,postUserId,setPostUserId,allusers,setAllusers
         }} >
             {children}
         </AuthContext.Provider>
