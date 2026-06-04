@@ -10,6 +10,9 @@ import { FcVideoCall } from "react-icons/fc";
 import { FaSave } from "react-icons/fa";
 import { BsFillCameraReelsFill } from "react-icons/bs";
 import { RiLoginBoxFill } from "react-icons/ri";
+import { RiLogoutBoxFill } from "react-icons/ri";
+import { FaUserAlt } from "react-icons/fa";
+
 
 
 
@@ -25,29 +28,29 @@ const Navbar = () => {
         <>
             <div className=' bg-[#0D121A] text-white sm:w-[20vw] sm:h-screen flex sm:flex-col p-2 justify-between items-center ' >
                 {
-                    islogin?(
+                    islogin ? (
                         <div>
-                    {
-                        userdata && "image_url" in userdata ? (
-                            <img
-                                src={userdata.image_url}
-                                alt="userimage"
-                                className="w-15 h-15 rounded-full "
-                            />
-                        ) : (
-                            <img
-                                src={blankuser}
-                                alt="userimage"
-                                className="w-15 h-15 rounded-full "
-                            />
-                        )
-                    }
-                    <p>{userdata.name}</p>
-                    <p>{userdata.username}</p>
-                </div>
-                    ):(
+                            {
+                                userdata && "image_url" in userdata ? (
+                                    <img
+                                        src={userdata.image_url}
+                                        alt="userimage"
+                                        className="w-15 h-15 rounded-full "
+                                    />
+                                ) : (
+                                    <img
+                                        src={blankuser}
+                                        alt="userimage"
+                                        className="w-15 h-15 rounded-full "
+                                    />
+                                )
+                            }
+                            <p>{userdata.name}</p>
+                            <p>{userdata.username}</p>
+                        </div>
+                    ) : (
                         <div className=' w-full flex justify-center items-center gap-3 ' >
-                            <img src={logo} className=' rounded-full w-10 h-10  ' alt="" /> 
+                            <img src={logo} className=' rounded-full w-10 h-10  ' alt="" />
                             <h1 className=' text-2xl  ' >Socially</h1>
                         </div>
                     )
@@ -64,7 +67,7 @@ const Navbar = () => {
                                         : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
                                 }
                             >
-                              <FcHome/>  Home
+                                <FcHome />  Home
                             </NavLink>
                         </li>
 
@@ -77,7 +80,7 @@ const Navbar = () => {
                                         : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
                                 }
                             >
-                            <FcVideoCall/>    Reels
+                                <FcVideoCall />    Reels
                             </NavLink>
                         </li>
 
@@ -90,7 +93,7 @@ const Navbar = () => {
                                         : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
                                 }
                             >
-                             <FaSave/>   Saved
+                                <FaSave />   Saved
                             </NavLink>
                         </li>
 
@@ -103,27 +106,42 @@ const Navbar = () => {
                                         : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
                                 }
                             >
-                             <BsFillCameraReelsFill/>   Create Reel
+                                <BsFillCameraReelsFill />   Create Reel
                             </NavLink>
                         </li>
 
                     </ul>
                 </div>
-                <div className=' h-20 ' >
-                    {
-                        // ---- yaha confusing hai login me bhi 
-                        islogin ?
-                            <div className='felx flex-col justify-between items-center h-full gap-2  ' >
-                                <div>
-                                    <button onClick={logingout} className=' cursor-pointer ' >Logout</button>
-                                </div>
-                                <div>
-                                    <button onClick={() => navigate("/profile")} className=' cursor-pointer ' >Profile</button>
-                                </div>
-                            </div>
-                            : <button onClick={() => setIsshowlogin(true)} className=' flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold bg-[#673CE6] cursor-pointer  hover:bg-gray-100 hover:text-black transition ' >Login <RiLoginBoxFill/> </button>
-                    }
+                <div className="h-30 ">
+                    {islogin ? (
+                        <div className="flex h-full flex-col justify-center gap-4">
 
+                            <button
+                                onClick={logingout}
+                                className="flex cursor-pointer w-full items-center gap-3 rounded-lg bg-[#673CE6] px-2 py-1.5 font-semibold text-white transition hover:bg-gray-100 hover:text-black"
+                            >
+                                Logout
+                                <RiLogoutBoxFill />
+                            </button>
+
+                            <button
+                                onClick={() => navigate("/profile")}
+                                className="flex cursor-pointer w-full items-center gap-3 rounded-lg bg-[#673CE6] px-2 py-1.5 font-semibold text-white transition hover:bg-gray-100 hover:text-black"
+                            >
+                                Profile
+                                <FaUserAlt />
+                            </button>
+
+                        </div>
+                    ) : (
+                        <button
+                            onClick={() => setIsshowlogin(true)}
+                            className="flex cursor-pointer w-full items-center gap-3 rounded-lg bg-[#673CE6] px-2 py-1.5 font-semibold text-white transition hover:bg-gray-100 hover:text-black"
+                        >
+                            Login
+                            <RiLoginBoxFill />
+                        </button>
+                    )}
                 </div>
             </div>
             {

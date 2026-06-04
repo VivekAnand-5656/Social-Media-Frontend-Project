@@ -149,37 +149,37 @@ const Profile = () => {
 
     return (
         <>
-            <div className=' w-[80vw] sm:h-screen flex p-2 items-center justify-between ' >
+            <div className='w-[80vw] h-screen bg-linear-to-br from-[#1B2735] to-[#2A3E48] flex gap-4 p-4 mx-auto' >
                 {/* ---------- User Data ------ */}
-                <div className=' w-[75%] h-full flex flex-col border ' >
-                    <div className=' border w-full h-[50%] flex  justify-evenly p-2 items-center  ' >
-                        <img src={userdata.image_url} alt="userimage" className=' w-38 h-38 rounded-full border ' />
-                        <div className=' border w-[50%] p-2 rounded-2xl ' >
-                            <p className=' text-2xl font-semibold ' >{userdata.username}</p>
-                            <p className=' text-[0.9rem] ' >{userdata.name}</p>
+                <div className='w-[75%] h-full flex flex-col bg-[#0D121A] text-white rounded-3xl shadow-2xl overflow-hidden' >
+                    <div className='w-full min-h-63 flex justify-evenly items-center p-6 border-b border-gray-700'>
+                        <img src={userdata.image_url} alt="userimage" className='w-40 h-40 rounded-full border-4 border-blue-500 object-cover shadow-lg'/>
+                        <div className=' bg-[#2A3E48] w-[50%] p-2 rounded-2xl ' >
+                            <p className='text-3xl font-bold mb-3' >{userdata.username}</p>
                             <div className=' flex gap-3 justify-center items-center text-center '>
                                 <p className=' flex flex-col '>0 <span className=' font-semibold ' >Posts</span></p>
                                 <p className=' flex flex-col ' >{userdata.numOfFollowers}<span className=' font-semibold cursor-pointer ' onClick={() => setIsPage("followers")} >Follower</span></p>
                                 <p className=' flex flex-col '>{userdata.numOfFollowings}<span className=' font-semibold cursor-pointer ' onClick={() => setIsPage("followings")} >Following</span></p>
                             </div>
+                            <p className=' text-[0.9rem] p-0.5 ' >{userdata.name}</p>
                             {/* --- contact --- */}
-                            <p className=' text-[0.9rem] p-2 ' >{userdata.email}</p>
-                            <button onClick={() => navigate("/updateprofile")} className=' p-2 bg-[#b0b3db] rounded-2xl cursor-pointer ' >Edit Profile</button>
+                            <p className=' text-[0.9rem] p-0.5 ' >{userdata.email}</p>
+                            <button onClick={() => navigate("/updateprofile")} className='mt-4 px-5 py-2 bg-blue-600 rounded-xl font-semibold hover:bg-blue-700 transition cursor-pointer' >Edit Profile</button>
                         </div>
                     </div>
                     {/* --------- My Posts --------- */}
-                    <div className='feed  bg-[#575353] w-full h-full flex  gap-5 rounded-2xl overflow-scroll ' >
+                    <div className='feed  bg-[#2A3E48] p-2 flex-wrap w-full h-full flex  gap-5 rounded-2xl overflow-scroll ' >
                         {
                             // ==== Setup baki hai iska 
                             myposts?.map((post) => (
-                                <div key={post.public_id} className="bg-white w-[30%] h-85  flex flex-col  rounded-xl shadow-md p-1.5 ">
+                                <div key={post.public_id} className="bg-[#4d6f80] w-[30%] h-85  flex flex-col  rounded-xl shadow-md p-1.5 ">
 
                                     <div className=' relative w-full h-full flex flex-col items-center ' >
                                         {/* ---- 3 dots --- */}
                                         <button className='   self-end-safe text-1rem cursor-pointer z-50 ' onClick={() => setOpendots(opendots?._id === post._id ? null : post)} ><TbDots /></button>
                                         {
                                             opendots?._id === post._id &&
-                                            <div>
+                                            <div className='  ' >
                                                 <div className='absolute top-5 right-0 w-25 h-15 text-[0.9rem] text-white bg-black rounded-2xl flex flex-col gap-1 p-1 z-50'>
                                                     <button onClick={() => deletePost(opendots._id)} className=' cursor-pointer ' >Delete Post</button>
                                                     <button onClick={() => setIsEdit(true)} className=' cursor-pointer ' >Edit Post</button>
@@ -214,12 +214,12 @@ const Profile = () => {
                                             post.post_url.endsWith(".mp4") ? (
 
                                                 <video src={post.post_url} controls
-                                                    className='w-full h-[70%] rounded-xl object-contain'></video>
+                                                    className='w-full h-[70%] rounded-2xl object-contain'></video>
                                             ) : (
                                                 <img
                                                     src={post.post_url}
                                                     alt="post"
-                                                    className="w-full h-[70%] rounded-xl object-contain"
+                                                    className="w-full h-[70%] rounded-2xl object-contain"
                                                 />
                                             )
                                         }
@@ -290,7 +290,7 @@ const Profile = () => {
                     </div>
                 </div>
                 {/* ------- followers and followings ------ */}
-                <div className=' w-[25%] h-full border ' >
+                <div className=' w-[25%] h-full bg-[#0D121A] rounded-2xl  text-white ' >
                     <div>
                         {renderfollow()}
                     </div>

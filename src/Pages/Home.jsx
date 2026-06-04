@@ -381,7 +381,7 @@ const Home = () => {
                         isFollow ? (
                           <button
                             onClick={() => unfollowPost(post.user_id)}
-                            className='flex bg-[#7f7f8d] px-1.5 text-black font-semibold rounded items-center cursor-pointer  gap-1'>
+                            className='flex bg-[#a4a4a7] px-1.5 text-black font-semibold rounded items-center cursor-pointer  gap-1'>
                             Following
                           </button>
                         )

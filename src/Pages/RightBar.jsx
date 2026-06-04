@@ -54,8 +54,7 @@ const RightBar = () => {
   useEffect(() => {
     fetchallusers()
   }, [])
-  return (
-    // ============== Login krna hai ab =============
+  return ( 
     <div className=' w-full bg-[#0D121A] rounded p-2 text-white flex flex-col gap-2  ' >
       <p className='  font-semibold ' >Suggestion</p>
       {
@@ -65,7 +64,7 @@ const RightBar = () => {
           )
           return (
             
-            <div className='w-full bg-[#ffffff] rounded-lg cursor-pointer hover:scale-105 transition-all duration-500 ease-in-out text-black px-2 py-1.5 flex justify-between items-center ' >
+            <div className='w-full bg-[#ffffff] rounded-lg cursor-pointer hover:scale-105 transition-all duration-500 ease-in-out text-black px-2 py-1.5 flex justify-between  items-center ' >
               {
                 user && "image_url" in user ? (
                   <img
@@ -81,7 +80,7 @@ const RightBar = () => {
                   />
                 )
               }
-              <p>{user.name}</p>
+              <p className=' text-[0.8rem] ' >{user.name}</p>
               {
                 isFollow ? (
                   <button

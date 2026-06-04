@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../Context/AuthContext";
+import { SquareLoader } from "react-spinners";
 
 const CreatePost = () => {
     const { token } = useContext(AuthContext);
+    const [loading,setLoading] = useState()
 
     const [caption, setCaption] = useState("");
     const [file, setFile] = useState(null);
@@ -19,6 +21,7 @@ const CreatePost = () => {
         }
 
         try {
+            setLoading(true)
             const formData = new FormData();
 
             formData.append("caption", caption);
@@ -43,39 +46,83 @@ const CreatePost = () => {
         } catch (error) {
             console.log(error);
             alert("Failed to create post");
+        } finally{
+            setLoading(false)
         }
     };
 
     return (
-        <div className=" w-[80vw] h-screen flex flex-col justify-center items-center " >
-           
-            <h2>Create Post</h2>
+        <div className="h-screen w-[80vw] p-2 bg-linear-to-br from-[#0f172a] via-[#1e293b] to-[#2563eb] flex items-center justify-center ">
 
-            <form onSubmit={handleSubmit} 
-            className=" w-[30%] p-3 rounded-4xl border  " >
-                <input
-                    type="text"
-                    placeholder="Enter caption"
-                    value={caption}
-                    onChange={(e) => setCaption(e.target.value)}
-                />
+            <div 
+            className="w-full max-w-xl rounded-3xl border border-blue-400/30 bg-[#0D121A]/90 backdrop-blur-md p-8 shadow-[0_0_40px_rgba(59,130,246,0.25)]">
 
-                <br />
-                <br />
+                <h2 className="mb-8 text-center text-4xl font-bold text-white">
+                    Create Post 🚀
+                </h2>
 
-                <input
-                    type="file"
-                    accept=".jpg, .jpeg, .png"
-                    onChange={(e) => setFile(e.target.files[0])}
-                />
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-6"
+                >
+                    {/* Caption Input */}
+                    <div>
+                        <label className="mb-2 block text-sm font-medium text-blue-300">
+                            Caption
+                        </label>
 
-                <br />
-                <br />
+                        <textarea
+                            placeholder="What's on your mind?"
+                            value={caption}
+                            onChange={(e) => setCaption(e.target.value)}
+                            rows={5}
+                            className="w-full resize-none rounded-2xl border border-blue-500/40 bg-[#1a2332] p-4 text-white outline-none transition-all duration-300 placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40"
+                        />
+                    </div>
 
-                <button type="submit">
-                    Create Post
-                </button>
-            </form>
+                    {/* File Upload */}
+                    <div>
+                        <label className="mb-2 block text-sm font-medium text-blue-300">
+                            Upload Image
+                        </label>
+
+                        <input
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            className="w-full cursor-pointer rounded-xl border border-dashed border-blue-500/50 bg-[#1a2332] p-4 text-gray-300 file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:bg-blue-700"
+                        />
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className="mt-2 rounded-2xl bg-linear-to-r from-blue-600 to-blue-500 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 hover:shadow-blue-500/40"
+                    >
+                        Create Post
+                    </button>
+                </form>
+                {/* ------- ---------- */}
+                {
+                    loading?(
+                        <div
+                        className="w-full fixed top-0 right-0 text-white flex justify-center items-center h-screen  max-w-xl rounded-3xl border border-blue-400/30 bg-[#0D121A]/90 backdrop-blur-md p-8 shadow-[0_0_40px_rgba(59,130,246,0.25)]">
+                            <SquareLoader
+                            loading={true}
+                            color="#ffffff"
+                            speedMultiplier={1}
+                            />
+                        </div>
+                        
+                    ):(
+                        <div
+                        className=" hidden fixed w-full max-w-xl rounded-3xl border border-blue-400/30 bg-[#0D121A]/90 backdrop-blur-md p-8 shadow-[0_0_40px_rgba(59,130,246,0.25)]">
+
+                        </div>
+                    )
+                }
+
+            </div>
         </div>
     );
 };
