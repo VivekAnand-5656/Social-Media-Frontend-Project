@@ -15,6 +15,8 @@ import Followers from './Users/Followers';
 import Followings from './Users/Followings';
 import CreateReel from './Users/CreateReel';
 import UserProfile from './Users/UserProfile';
+ 
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,6 +43,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </AuthProvider>
+    <ToastContainer/>
 
     </>
   )

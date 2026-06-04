@@ -4,6 +4,16 @@ import { AuthContext } from '../Context/AuthContext'
 import Login from '../Auths/Login'
 import blankuser from '../assets/blankuser.png'
 
+import logo from '../assets/logo.png'
+import { FcHome } from "react-icons/fc";
+import { FcVideoCall } from "react-icons/fc";
+import { FaSave } from "react-icons/fa";
+import { BsFillCameraReelsFill } from "react-icons/bs";
+import { RiLoginBoxFill } from "react-icons/ri";
+
+
+
+
 const Navbar = () => {
     const { islogin, logout, isshowlogin, setIsshowlogin, userdata } = useContext(AuthContext)
     const navigate = useNavigate()
@@ -13,33 +23,90 @@ const Navbar = () => {
     }
     return (
         <>
-            <div className=' sm:w-[20vw] sm:h-screen flex sm:flex-col border-r-2 p-2 justify-between ' >
-                <div>
+            <div className=' bg-[#0D121A] text-white sm:w-[20vw] sm:h-screen flex sm:flex-col p-2 justify-between items-center ' >
+                {
+                    islogin?(
+                        <div>
                     {
                         userdata && "image_url" in userdata ? (
                             <img
                                 src={userdata.image_url}
                                 alt="userimage"
-                                className="w-25 h-25 rounded-full "
+                                className="w-15 h-15 rounded-full "
                             />
                         ) : (
                             <img
                                 src={blankuser}
                                 alt="userimage"
-                                className="w-38 h-38 rounded-full "
+                                className="w-15 h-15 rounded-full "
                             />
                         )
                     }
                     <p>{userdata.name}</p>
                     <p>{userdata.username}</p>
                 </div>
-                <div className=' border-2 sm:h-[70%]   ' >
-                    <ul className=' flex sm:flex-col gap-2 ' >
-                        <li><NavLink to="/" className={({ isActive }) => isActive ? "text-[#ff00d0] border-b-2 border-[#ff00d0] pb-1" : " hover:text-[#000000] text-[#000000] font-semibold   transition"} >Home</NavLink></li>
+                    ):(
+                        <div className=' w-full flex justify-center items-center gap-3 ' >
+                            <img src={logo} className=' rounded-full w-10 h-10  ' alt="" /> 
+                            <h1 className=' text-2xl  ' >Socially</h1>
+                        </div>
+                    )
+                }
+                <div className='w-[80%] sm:h-[70%] flex justify-center items-center'>
+                    <ul className='w-full flex sm:flex-col gap-2'>
 
-                        <li><NavLink to="/reels" className={({ isActive }) => isActive ? "text-[#ff00d0] border-b-2 border-[#ff00d0] pb-1" : " hover:text-[#ff00d0] text-[#000000] font-semibold   transition"}>Reels</NavLink></li>
-                        <li><NavLink to="/savedpost" >Saved</NavLink></li>
-                        <li><NavLink to="/createreel" >CreateReel</NavLink></li>
+                        <li className='w-full '>
+                            <NavLink
+                                to="/"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white bg-[#27284A]"
+                                        : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
+                                }
+                            >
+                              <FcHome/>  Home
+                            </NavLink>
+                        </li>
+
+                        <li className='w-full'>
+                            <NavLink
+                                to="/reels"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white bg-[#27284A]"
+                                        : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
+                                }
+                            >
+                            <FcVideoCall/>    Reels
+                            </NavLink>
+                        </li>
+
+                        <li className='w-full'>
+                            <NavLink
+                                to="/savedpost"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white bg-[#27284A]"
+                                        : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
+                                }
+                            >
+                             <FaSave/>   Saved
+                            </NavLink>
+                        </li>
+
+                        <li className='w-full'>
+                            <NavLink
+                                to="/createreel"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white bg-[#27284A]"
+                                        : "flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold hover:bg-gray-100 hover:text-black transition"
+                                }
+                            >
+                             <BsFillCameraReelsFill/>   Create Reel
+                            </NavLink>
+                        </li>
+
                     </ul>
                 </div>
                 <div className=' h-20 ' >
@@ -54,7 +121,7 @@ const Navbar = () => {
                                     <button onClick={() => navigate("/profile")} className=' cursor-pointer ' >Profile</button>
                                 </div>
                             </div>
-                            : <button onClick={() => setIsshowlogin(true)} >Login</button>
+                            : <button onClick={() => setIsshowlogin(true)} className=' flex w-full gap-3 items-center px-2 py-1.5 rounded-lg text-white font-semibold bg-[#673CE6] cursor-pointer  hover:bg-gray-100 hover:text-black transition ' >Login <RiLoginBoxFill/> </button>
                     }
 
                 </div>

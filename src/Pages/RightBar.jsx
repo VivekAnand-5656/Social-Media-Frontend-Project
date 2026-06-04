@@ -55,26 +55,29 @@ const RightBar = () => {
     fetchallusers()
   }, [])
   return (
-    <div className=' w-full bg-white  ' >
+    // ============== Login krna hai ab =============
+    <div className=' w-full bg-[#0D121A] rounded p-2 text-white flex flex-col gap-2  ' >
+      <p className='  font-semibold ' >Suggestion</p>
       {
         allusers.map((user) => {
           const isFollow = user.followers?.some(
             (fl) => fl.user_id === userdata?._id
           )
           return (
-            <div className='w-full p-1.5 flex justify-between items-center ' >
+            
+            <div className='w-full bg-[#ffffff] rounded-lg cursor-pointer hover:scale-105 transition-all duration-500 ease-in-out text-black px-2 py-1.5 flex justify-between items-center ' >
               {
                 user && "image_url" in user ? (
                   <img
                     src={user.image_url}
                     alt="userimage"
-                    className="w-5 h-5 rounded-full "
+                    className="w-10 h-10 rounded-full "
                   />
                 ) : (
                   <img
                     src={blankuser}
                     alt="userimage"
-                    className="w-5 h-5 rounded-full "
+                    className="w-10 h-10 rounded-full "
                   />
                 )
               }
