@@ -25,14 +25,14 @@ import blankuser from '../assets/blankuser.png'
 // import spinner from '../assets/loading.json'
 
 import { PacmanLoader } from 'react-spinners'
-import { toast, Bounce } from 'react-toastify'
+import { toast, Slide } from 'react-toastify'
 
 
 
 
 const Home = () => {
 
-  const { token, userdata, setUserdata, postUserId, setPostUserId } = useContext(AuthContext)
+  const { token, userdata,islogin, setUserdata, postUserId, setPostUserId } = useContext(AuthContext)
   const [loading, setLoading] = useState(true)
   const [formdata, setFormdata] = useState({
     comment: ""
@@ -131,7 +131,17 @@ const Home = () => {
         }
       )
       getPosts()
-      console.log("Post saved")
+      toast.success(`Post Saved`, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     } catch (error) {
       console.log(`Error:- ${error}`)
       console.log("Post already saved");
@@ -149,7 +159,17 @@ const Home = () => {
         }
       )
       getPosts()
-      console.log("Post UnSaved")
+      toast.success(`Post Saved`, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     } catch (error) {
       console.log(`Error:- ${error}`)
       console.log("Already unsaved post");
@@ -171,21 +191,29 @@ const Home = () => {
           }
         }
       )
-      getPosts()
-      console.log("Comment Successfully")
-      alert("Comment Successfully")
+      getPosts() 
       setFormdata({
         comment: ""
       })
 
     } catch (error) {
-      console.log(`Error:- ${error}`)
-      console.log("Comment not posted");
+      console.log(`Error:- ${error}`) 
+      toast.error('Please Login ❌!', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
 
     }
   }
   // ------- Follow --------
-  const followpost = async (userId) => {
+  const followpost = async (userId, username) => {
     try {
       const response = await axios.put(`${apibase}/user/follow/${userId}`, {},
         {
@@ -195,14 +223,37 @@ const Home = () => {
         }
       )
       getPosts()
-      console.log("Follow Successfull");
-      alert("Follow Successfully")
+      const followmsg = (username) => {
+        toast.success(`You are following ${username}`, {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+      }
+      followmsg(username)
     } catch (error) {
       console.log(`Error:- ${error}`);
+      toast.error('Please Login ❌!', {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
   // ----------- Unfollow -----------
-  const unfollowPost = async (userId) => {
+  const unfollowPost = async (userId, username) => {
     try {
       const response = await axios.put(`${apibase}/user/unfollow/${userId}`, {},
         {
@@ -212,11 +263,34 @@ const Home = () => {
         }
       )
       getPosts()
-      console.log("Unfollow Successfully");
-      alert("Unfollow Successfully")
+      const followmsg = (username) => {
+        toast.success(`You are unFollowing ${username}`, {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          transition: Slide,
+        });
+      }
+      followmsg(username)
 
     } catch (error) {
       console.log(`Error:- ${error}`);
+      toast.error('Please Login ❌!', {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
   // ------------------- Search Users  --------------------
@@ -268,13 +342,13 @@ const Home = () => {
   }
 
   return (
-    <div className='sm:w-[80vw] sm:h-screen bg-[#2A3E48] flex gap-2 p-2 '>
+    <div className='sm:w-[85vw] sm:h-screen bg-[#ffffff] justify-between  flex gap-2 p-2 '>
 
       {/* ===== Center ===== */}
-      <div className="center w-[75%] flex flex-col gap-1.5   h-full">
+      <div className="center  w-[75%] flex flex-col gap-1.5   h-full">
 
         {/* Search */}
-        <div className='bg-[#0D121A] w-full h-[10%] rounded-2xl flex justify-between items-center'>
+        <div className='bg-[#FDEEE7] w-full h-[8%] rounded flex justify-between items-center'>
           <input
             type="text"
             name='search'
@@ -286,36 +360,79 @@ const Home = () => {
             }}
             onChange={(e) => setSearch(e.target.value)}
             placeholder='Search users.....'
-            className='rounded-2xl w-[75%] h-full p-2 bg-[#222b3a] text-white   '
+            className='rounded w-[75%] h-full p-2 bg-[#FDEEE7] text-black outline-none border-r-2 border-r-[#F27734]   '
           />
           <button
             onClick={searchUserData}
             className=' p-1.5 bg-[#c0b8b8] rounded-2xl cursor-pointer ' ><FaSearch /></button>
           {/* .------------ Show users ---------- */}
           {showUsers && (
-            <div className="absolute top-12 left-60 w-[50%] bg-white border rounded shadow-lg max-h-60 overflow-y-auto z-50">
+            <div className="absolute top-12 left-60 w-[50%] bg-[#F27734] border border-[#F27734] rounded-2xl shadow-2xl max-h-72 overflow-y-auto z-50 p-2">
+
               {searchUsers.length > 0 ? (
-                searchUsers.map((user) => (
-                  <div
-                    key={user._id}
-                    className="flex justify-between items-center p-2 hover:bg-gray-100 cursor-pointer"
-                  >
-                    <p>{user.name}</p>
-                    <button className="bg-blue-500 text-white px-2 py-1 rounded">
-                      Follow
-                    </button>
-                  </div>
-                ))
+
+                searchUsers.map((user) => {
+                  const isFollows = user.followers?.some(
+                    (fl) => fl.user_id === userdata?._id
+                  )
+
+                  return (
+                    <div
+                      key={user._id}
+                      className="flex justify-between items-center p-3 rounded-xl hover:bg-[#FDEEE7] hover:border-[#F27734] border border-transparent transition-all duration-300 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={user.image_url || blankuser}
+                          alt="user"
+                          className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                        />
+
+                        <div>
+                          <p className="text-sm font-medium text-black">
+                            {user.name}
+                          </p>
+
+                          <p className="text-xs text-black">
+                            @{user.username}
+                          </p>
+                        </div>
+                      </div>
+
+                      {
+                        isFollows ? (
+                          <button
+                            onClick={() => unfollowPost(user._id, user.name)}
+                            className="px-3 py-1.5 text-xs bg-gray-700 hover:bg-gray-600 rounded-lg transition-all cursor-pointer"
+                          >
+                            Following
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              followpost(user._id, user.name)
+
+                            }}
+                            className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 rounded-lg transition-all cursor-pointer"
+                          >
+                            Follow
+                          </button>
+                        )
+                      }
+                    </div>
+                  )
+                })
               ) : (
-                <p className="p-2 text-center">No users found</p>
+                <p className="p-4 text-center text-gray-400">
+                  No users found
+                </p>
               )}
+
             </div>
           )}
-          {/* className="group cursor-pointer outline-none hover:rotate-90 duration-300" */}
-          {/* <!-- From Uiverse.io by tranphattrien -->  */}
           <button
             onClick={() => navigate("/createpost")}
-            className="w-[20%] bg-black h-full my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-linear-to-r before:from-[#012852] before:to-[rgb(1,12,61)] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff]">
+            className="w-[20%] bg-[#FDEEE7] h-full my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-linear-to-r before:from-[#F27734] before:to-[#F27734] before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#000000] font-semibold hover:text-[#ffffff]">
             Create Post
           </button>
         </div>
@@ -327,12 +444,12 @@ const Home = () => {
 
               <PacmanLoader
                 loading={true}
-                color='#000000'
+                color='#F27734'
                 speedMultiplier={1}
               />
             </div>
           ) : (
-            <div className='feed bg-[#0D121A] p-2 w-full h-[90%] flex flex-col items-center gap-5 rounded overflow-scroll'>
+            <div className='feed bg-[#FDEEE7] p-2 w-full h-[90%] flex flex-col items-center gap-5 rounded overflow-scroll'>
 
               {posts?.map((post) => {
 
@@ -380,14 +497,14 @@ const Home = () => {
                       {
                         isFollow ? (
                           <button
-                            onClick={() => unfollowPost(post.user_id)}
+                            onClick={() => unfollowPost(post.user_id, post.user.name)}
                             className='flex bg-[#a4a4a7] px-1.5 text-black font-semibold rounded items-center cursor-pointer  gap-1'>
                             Following
                           </button>
                         )
                           : (
                             <button
-                              onClick={() => followpost(post.user_id)}
+                              onClick={() => followpost(post.user_id, post.user.name)}
                               className='flex bg-[#0022ff] px-1.5 text-white font-semibold rounded items-center cursor-pointer gap-1'>
                               Follow
                             </button>
@@ -441,22 +558,22 @@ const Home = () => {
                             {/* ---------- Like Box ------- */}
                             {
                               selectlikepost &&
-                              <div className="feed  fixed top-25 right-95 z-50 flex h-[50%] w-[40%] flex-col overflow-y-auto rounded-2xl border border-blue-500 bg-gradient-to-br from-blue-50 to-white p-5 shadow-2xl">
+                              <div className="feed  fixed top-25 right-95 z-50 flex h-[50%] w-[40%] flex-col overflow-y-auto rounded-2xl border border-orange-400 bg-linear-to-br from-orange-50 to-white p-5 shadow-2xl">
 
                                 <button
                                   onClick={() => setSelectlikepost(null)}
-                                  className="self-end text-3xl cursor-pointer text-blue-600 transition-all duration-300 hover:scale-110 hover:text-blue-800"
+                                  className="self-end text-3xl cursor-pointer text-orange-600 transition-all duration-300 hover:scale-110 hover:text-orange-800"
                                 >
                                   <RiCloseCircleFill />
                                 </button>
 
-                                <h2 className="mb-4 border-b border-blue-200 pb-3 text-xl font-bold text-blue-700">
+                                <h2 className="mb-4 border-b border-orange-200 pb-3 text-xl font-bold text-black">
                                   Likes
                                 </h2>
 
                                 {selectlikepost.likes.length === 0 ? (
                                   <div className="flex h-full items-center justify-center">
-                                    <p className="text-lg font-medium text-blue-500">
+                                    <p className="text-lg font-medium text-black">
                                       No Likes Yet 💙
                                     </p>
                                   </div>
@@ -464,13 +581,13 @@ const Home = () => {
                                   selectlikepost.likes.map((like, index) => (
                                     <div
                                       key={index}
-                                      className="mb-3 cursor-pointer rounded-xl border border-blue-100 bg-white p-4 shadow-sm transition-all duration-300 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md"
+                                      className="mb-3 cursor-pointer rounded-xl border border-orange-100 bg-white p-4 shadow-sm transition-all duration-300 hover:border-orange-400 hover:bg-orange-50 hover:shadow-md"
                                     >
-                                      <p className="text-base font-semibold text-blue-900">
+                                      <p className="text-base font-semibold text-black">
                                         {like.name}
                                       </p>
 
-                                      <p className="text-sm text-blue-600">
+                                      <p className="text-sm text-black ">
                                         @{like.username}
                                       </p>
                                     </div>
@@ -489,11 +606,11 @@ const Home = () => {
                             {/* ---- Show Comments Box ---- */}
                             {
                               selectcommentpost &&
-                              <div className="feed fixed top-25 right-95 z-50 flex h-[50%] w-[40%] flex-col justify-between rounded-2xl border border-blue-500 bg-gradient-to-br from-blue-50 to-white p-5 shadow-2xl">
+                              <div className="feed fixed top-25 right-95 z-50 flex h-[50%] w-[40%] flex-col justify-between rounded-2xl border border-orange-500 bg-linear-to-br from-orange-50 to-white p-5 shadow-2xl">
 
                                 <button
                                   onClick={() => setSelectcommentpost(null)}
-                                  className="self-end cursor-pointer text-3xl text-blue-600 transition-all duration-300 hover:scale-110 hover:text-blue-800"
+                                  className="self-end cursor-pointer text-3xl text-orange-600 transition-all duration-300 hover:scale-110 hover:text-orange-800"
                                 >
                                   <RiCloseCircleFill />
                                 </button>
@@ -501,7 +618,7 @@ const Home = () => {
                                 <div className="feed mb-4 flex-1 overflow-y-auto pr-2">
                                   {selectcommentpost.comments.length === 0 ? (
                                     <div className="flex h-full items-center justify-center">
-                                      <p className="text-lg font-medium text-blue-500">
+                                      <p className="text-lg font-medium text-black">
                                         No Comments Yet 💬
                                       </p>
                                     </div>
@@ -509,13 +626,13 @@ const Home = () => {
                                     selectcommentpost.comments.map((comment, index) => (
                                       <div
                                         key={index}
-                                        className="mb-3 cursor-pointer rounded-xl border border-blue-100 bg-white p-4 shadow-sm transition-all duration-300 hover:border-blue-400 hover:bg-blue-50 hover:shadow-md"
+                                        className="mb-3 cursor-pointer rounded-xl border border-orange-100 bg-white p-4 shadow-sm transition-all duration-300 hover:border-orange-400 hover:bg-orange-50 hover:shadow-md"
                                       >
-                                        <p className="font-semibold text-blue-900">
+                                        <p className="font-semibold text-black">
                                           {comment.name}
                                         </p>
 
-                                        <div className="mt-2 flex items-center gap-3 text-blue-700">
+                                        <div className="mt-2 flex items-center gap-3 text-black">
                                           <FaRegCommentDots className="text-lg" />
                                           <p className="text-sm">{comment.comment}</p>
                                         </div>
@@ -524,19 +641,19 @@ const Home = () => {
                                   )}
                                 </div>
 
-                                <div className="flex items-center gap-3 border-t border-blue-200 pt-3">
+                                <div className="flex items-center gap-3 border-t border-orange-200 pt-3">
                                   <input
                                     type="text"
                                     name="comment"
                                     placeholder="Add a comment..."
                                     value={formdata.comment}
                                     onChange={handlechange}
-                                    className="w-full rounded-full border border-blue-300 bg-white px-4 py-2 outline-none transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                                    className="w-full rounded-full border border-orange-300 bg-white px-4 py-2 outline-none transition-all duration-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                                   />
 
                                   <button
                                     onClick={() => commentPost(selectcommentpost._id)}
-                                    className="cursor-pointer rounded-full p-2 text-4xl text-blue-600 transition-all duration-300 hover:scale-110 hover:text-blue-800"
+                                    className="cursor-pointer rounded-full p-2 text-4xl text-orange-600 transition-all duration-300 hover:scale-110 hover:text-orange-800"
                                   >
                                     <BiSolidSend />
                                   </button>
@@ -587,7 +704,7 @@ const Home = () => {
       </div>
 
       {/* ===== Right ===== */}
-      <div className="right w-[25%] bg-[#0D121A] rounded h-full">
+      <div className="right w-[30%] bg-[#FDEEE7] p-1.5 rounded h-full">
         <RightBar />
       </div>
 

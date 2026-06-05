@@ -33,16 +33,45 @@ const Followers = () => {
     }, [token])
 
     return (
-        <div className=' w-full flex flex-col gap-3 p-1.5 ' >
+        <div className="w-full flex flex-col gap-3 p-3">
             {
                 myfollowers?.length > 0 ? (
                     myfollowers.map((user) => (
-                        <div key={user._id}>
-                            <p>{user.name}</p>
+                        <div
+                            key={user._id}
+                            className="flex items-center gap-3 bg-[#ffffff]  rounded-xl p-3 hover:border-orange-500 transition-all"
+                        >
+                            {
+                                user?.image_url ? (
+                                    <img
+                                        src={user.image_url}
+                                        alt="user"
+                                        className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                                    />
+                                ) : (
+                                    <img
+                                        src={blankuser}
+                                        alt="user"
+                                        className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                                    />
+                                )
+                            }
+
+                            <div>
+                                <p className="text-sm font-medium text-black">
+                                    {user.name}
+                                </p>
+
+                                <p className="text-xs text-gray-400">
+                                    Follower
+                                </p>
+                            </div>
                         </div>
                     ))
                 ) : (
-                    <p>No followers found</p>
+                    <p className="text-center text-gray-400 mt-5">
+                        No Followers Found
+                    </p>
                 )
             }
         </div>

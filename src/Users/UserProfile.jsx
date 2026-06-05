@@ -36,45 +36,87 @@ const UserProfile = () => {
         }
     }, [postUserId])
     return (
-        <div className=' w-[80vw] sm:h-screen flex p-2 items-center justify-between ' >
-            <div className=' w-[75%] h-full flex flex-col border ' >
-                <div className=' border w-full h-[50%] flex  justify-evenly p-2 items-center  ' >
+        <div className="w-[85vw]  h-screen mx-auto flex items-center justify-center p-5 bg-[#ffffff]">
+
+            <div className="w-[75%] h-[85%] bg-[#FDEEE7] rounded-3xl shadow-2xl overflow-hidden">
+
+                <div className="w-full h-full flex justify-evenly items-center px-8">
+
                     {
                         userfound && "image_url" in userfound ? (
                             <img
                                 src={userfound.image_url}
                                 alt="userimage"
-                                className="w-38 h-38 rounded-full border"
+                                className="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-lg"
                             />
                         ) : (
                             <img
                                 src={blankuser}
                                 alt="userimage"
-                                className="w-38 h-38 rounded-full border"
+                                className="w-40 h-40 rounded-full object-cover border-4 border-blue-500 shadow-lg"
                             />
                         )
                     }
-                    {/* <img src={userfound.image_url} alt="userimage" className=' w-38 h-38 rounded-full border ' /> */}
+
                     {
                         userfound ? (
-                            <div className=' border w-[50%] p-2 rounded-2xl ' >
-                                <p className=' text-2xl font-semibold ' >{userfound.username}</p>
-                                <p className=' text-[0.9rem] ' >{userfound.name}</p>
-                                <div className=' flex gap-3 justify-center items-center text-center '>
-                                    <p className=' flex flex-col '>0 <span className=' font-semibold ' >Posts</span></p>
-                                    <p className=' flex flex-col ' >{userfound.numOfFollowers}<span className=' font-semibold cursor-pointer '   >Follower</span></p>
-                                    <p className=' flex flex-col '>{userfound.numOfFollowings}<span className=' font-semibold cursor-pointer '   >Following</span></p>
-                                    {/* <p className=' flex flex-col ' >{userfound.numOfFollowers}<span className=' font-semibold cursor-pointer ' onClick={() => setIsPage("followers")} >Follower</span></p>
-                            <p className=' flex flex-col '>{userfound.numOfFollowings}<span className=' font-semibold cursor-pointer ' onClick={() => setIsPage("followings")} >Following</span></p> */}
+                            <div className="bg-[#ff5608] w-[55%] p-6 rounded-3xl border border-gray-700 shadow-lg">
+
+                                <p className="text-xl font-semibold text-white">
+                                    @{userfound.username}
+                                </p>
+
+                                <p className="text-sm text-gray-400 mt-1">
+                                    {userfound.name}
+                                </p>
+
+                                <div className="flex gap-10 mt-5">
+
+                                    <div className="text-center">
+                                        <p className="text-lg font-semibold text-white">
+                                            0
+                                        </p>
+                                        <span className="text-sm text-gray-400">
+                                            Posts
+                                        </span>
+                                    </div>
+
+                                    <div className="text-center">
+                                        <p className="text-lg font-semibold text-white">
+                                            {userfound.numOfFollowers}
+                                        </p>
+                                        <span className="text-sm text-gray-400">
+                                            Followers
+                                        </span>
+                                    </div>
+
+                                    <div className="text-center">
+                                        <p className="text-lg font-semibold text-white">
+                                            {userfound.numOfFollowings}
+                                        </p>
+                                        <span className="text-sm text-gray-400">
+                                            Following
+                                        </span>
+                                    </div>
+
                                 </div>
-                                {/* --- contact --- */}
-                                <p className=' text-[0.9rem] p-2 ' >{userfound.email}</p>
+
+                                <div className="mt-5 border-t border-gray-700 pt-4">
+                                    <p className="text-sm text-gray-300">
+                                        📧 {userfound.email}
+                                    </p>
+                                </div>
+
                             </div>
                         ) : (
-                            <p>Loading </p>
+                            <p className="text-white">
+                                Loading...
+                            </p>
                         )
                     }
+
                 </div>
+
             </div>
 
         </div>

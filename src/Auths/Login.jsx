@@ -4,6 +4,7 @@ import axios from 'axios'
 import { CgCloseO } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { HashLoader } from 'react-spinners';
+import { toast,Slide, Bounce } from 'react-toastify';
 
 
 const Login = () => {
@@ -25,13 +26,24 @@ const Login = () => {
         try {
             setLoading(true)
             const response = await axios.post(`${apibase}/public/login`, formData)
-            console.log(`Token:- ${response.data["token"]}`)
             const datas = response.data
             login(datas.token)
+            toast.success('☑️ Login Successfully', {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Slide,
+                  });
             setFormData({
                 email: "",
                 password: ""
             })
+            navigate("/")
 
         } catch (error) {
             console.log(`Error:- ${error}`);
@@ -43,11 +55,11 @@ const Login = () => {
         <>
             {
                 loading ? (
-                    <div className=' w-100 h-100 fixed z-50 top-25 left-100 bg-[#0D121A] border-[#ffffff] border text-white rounded-2xl p-2 flex flex-col  items-center  '  >
+                    <div className=' w-100 h-100 fixed z-50 top-25 left-100 bg-[#F27734] border-[#ffffff] border text-white rounded-2xl p-2 flex flex-col  items-center  '  >
                         <CgCloseO
                             onClick={() => setIsshowlogin(false)}
                             className=' self-end-safe left-192 text-3xl cursor-pointer ' />
-                        <div className=' w-full mt-35  flex justify-center items-cente  ' >
+                        <div className=' w-full mt-35  flex justify-center items-center  ' >
                             
                             <HashLoader 
                             loading={true}
@@ -57,7 +69,7 @@ const Login = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className=' w-100 h-100 fixed z-50 top-25 left-100 bg-[#0D121A] border-[#ffffff] border text-white rounded-2xl p-2 flex flex-col  items-center  '  >
+                    <div className=' w-100 h-100 fixed z-50 top-25 left-100 bg-[#F27734]   text-white rounded-2xl p-2 flex flex-col  items-center  '  >
                         <CgCloseO
                             onClick={() => setIsshowlogin(false)}
                             className=' self-end-safe left-192 text-3xl cursor-pointer ' />
@@ -68,24 +80,24 @@ const Login = () => {
                             <input type="email" name='email' placeholder='Enter email' required
                                 value={formData.email}
                                 onChange={handleChange}
-                                className=' bg-[#383963] w-full  rounded text-white  outline-0 p-1.5 '
+                                className=' bg-[#FDEEE7] w-full  rounded text-black  outline-0 p-1.5 '
                             />
                             <input type="password" name="password" placeholder='Enter Password' required
                                 value={formData.password}
                                 onChange={handleChange}
-                                className=' bg-[#383963]  rounded text-white w-full outline-0 p-1.5 '
+                                className=' bg-[#FDEEE7]  rounded text-black w-full outline-0 p-1.5 '
                             />
                             <button type='submit'
-                                className=' cursor-pointer bg-[#0004ff] font-semibold  w-[50%]  rounded text-white   p-1.5 '
+                                className=' cursor-pointer bg-[#fd5304] border border-[#FDEEE7] font-semibold  w-[50%]  rounded text-white   p-1.5 '
                             >Login</button>
                         </form>
 
-                        <p>if don't have account ? <span className=' cursor-pointer text-[#040cff] ' onClick={() => (
+                        <p>if don't have account ? <span className=' cursor-pointer text-[#000000] ' onClick={() => (
                             navigate("/signup"),
                             setIsshowlogin(false)
 
                         )} >Create account</span></p>
-                        <div className=' w-[60%] text-[#040cff] text-center cursor-pointer  ' >
+                        <div className=' w-[60%] text-[#000000] text-center cursor-pointer  ' >
                             <p>Forgot Passowrd</p>
                         </div>
 

@@ -2,9 +2,11 @@ import axios from 'axios'
 import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../Context/AuthContext'
 import blankuser from '../assets/blankuser.png'
+import { toast, Slide } from 'react-toastify'
+
 
 const RightBar = () => {
-  const { token, allusers, setAllusers, userdata } = useContext(AuthContext)
+  const { token, islogin, allusers, setAllusers, userdata } = useContext(AuthContext)
 
   const apibase = "https://socialmediaproject-6sl8.onrender.com"
   const fetchallusers = async () => {
@@ -17,7 +19,7 @@ const RightBar = () => {
     }
   }
   // ------------- Follow -----------
-  const followpost = async (userId) => {
+  const followpost = async (userId,username) => {
     try {
       const response = await axios.put(`${apibase}/user/follow/${userId}`, {},
         {
@@ -27,14 +29,39 @@ const RightBar = () => {
         }
       )
       fetchallusers()
-      console.log("Follow Successfull");
-      alert("Follow Successfully")
+      const followmsg = (username)=>{
+        toast.success(`You are following ${username}`, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
+      }
+      followmsg(username)
+
+
     } catch (error) {
       console.log(`Error:- ${error}`);
+      toast.error('Please Login ❌!', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
   // --------------- UnFollow ------------
-  const unfollowPost = async (userId) => {
+  const unfollowPost = async (userId,username) => {
     try {
       const response = await axios.put(`${apibase}/user/unfollow/${userId}`, {},
         {
@@ -44,63 +71,103 @@ const RightBar = () => {
         }
       )
       fetchallusers()
-      console.log("Unfollow Successfully");
-      alert("Unfollow Successfully")
+       const followmsg = (username)=>{
+        toast.success(`You are unFollowing ${username}`, {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
+      }
+      followmsg(username)
 
     } catch (error) {
       console.log(`Error:- ${error}`);
+      toast.error('Please Login ❌!', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
     }
   }
   useEffect(() => {
     fetchallusers()
   }, [])
-  return ( 
-    <div className=' w-full bg-[#0D121A] rounded p-2 text-white flex flex-col gap-2  ' >
-      <p className='  font-semibold ' >Suggestion</p>
+  return (
+    <div className="w-full bg-[#ffffff] rounded-2xl p-4 text-white flex flex-col gap-3   shadow-lg">
+
+      <p className="font-semibold text-sm text-gray-300">
+        Suggestions For You
+      </p>
+
       {
         allusers.map((user) => {
           const isFollow = user.followers?.some(
             (fl) => fl.user_id === userdata?._id
           )
+
           return (
-            
-            <div className='w-full bg-[#ffffff] rounded-lg cursor-pointer hover:scale-105 transition-all duration-500 ease-in-out text-black px-2 py-1.5 flex justify-between  items-center ' >
-              {
-                user && "image_url" in user ? (
-                  <img
-                    src={user.image_url}
-                    alt="userimage"
-                    className="w-10 h-10 rounded-full "
-                  />
-                ) : (
-                  <img
-                    src={blankuser}
-                    alt="userimage"
-                    className="w-10 h-10 rounded-full "
-                  />
-                )
-              }
-              <p className=' text-[0.8rem] ' >{user.name}</p>
+            <div
+              key={user._id}
+              className="w-full bg-[#F27734] rounded-xl   p-3 flex justify-between items-center transition-all duration-300"
+            >
+              <div className="flex items-center gap-3">
+                {
+                  user && "image_url" in user ? (
+                    <img
+                      src={user.image_url}
+                      alt="user"
+                      className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                    />
+                  ) : (
+                    <img
+                      src={blankuser}
+                      alt="user"
+                      className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                    />
+                  )
+                }
+
+                <p className="text-sm font-medium">
+                  {user.name}
+                </p>
+              </div>
               {
                 isFollow ? (
                   <button
-                    onClick={() => unfollowPost(user._id)}
-                    className='flex items-center cursor-pointer  gap-1'>
+                    onClick={() => unfollowPost(user._id,user.name)}
+                    className="px-3 py-1.5 text-xs bg-gray-700 hover:bg-gray-600 rounded-lg transition-all cursor-pointer"
+                  >
                     Following
                   </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      followpost(user._id,user.name)
+                      
+                    }}
+                    className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 rounded-lg transition-all cursor-pointer"
+                  >
+                    Follow
+                  </button>
                 )
-                  : (
-                    <button
-                      onClick={() => followpost(user._id)}
-                      className='flex items-center cursor-pointer gap-1'>
-                      Follow
-                    </button>
-                  )
               }
             </div>
           )
         })
       }
+
     </div>
   )
 }

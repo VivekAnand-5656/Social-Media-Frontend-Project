@@ -11,6 +11,7 @@ import { RiCloseCircleFill } from "react-icons/ri";
 import { FaRegCommentDots } from "react-icons/fa6";
 import { BiSolidSend } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
+ 
 
 import blankuser from '../assets/blankuser.png'
 
@@ -34,10 +35,8 @@ const SavedPosts = () => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-            )
-            console.log(response.data);
-            setSaveposts(response.data)
-            console.log("Post mil gi bhai ");
+            ) 
+            setSaveposts(response.data) 
 
 
         } catch (error) {
@@ -65,13 +64,11 @@ const SavedPosts = () => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-            )
-            console.log("Post liked");
+            ) 
             fetchsaveposts(userdata._id)
 
         } catch (error) {
-            console.log("Error:", error)
-            alert(`Login Please`)
+            console.log("Error:", error) 
         }
     }
     // ------------ Unlike Posts --------
@@ -83,8 +80,7 @@ const SavedPosts = () => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-            )
-            console.log("Unliked Post");
+            ) 
             fetchsaveposts(userdata._id)
 
         } catch (error) {
@@ -108,8 +104,7 @@ const SavedPosts = () => {
                 }
             )
             fetchsaveposts(userdata._id)
-            console.log("Comment Successfully")
-            alert("Comment Successfully")
+             
             setFormdata({
                 comment: ""
             })
@@ -131,8 +126,7 @@ const SavedPosts = () => {
                 }
             )
             fetchsaveposts(userdata._id)
-            console.log("Follow Successfull");
-            alert("Follow Successfully")
+             
         } catch (error) {
             console.log(`Error:- ${error}`);
         }
@@ -148,8 +142,7 @@ const SavedPosts = () => {
                 }
             )
             fetchsaveposts(userdata._id)
-            console.log("Unfollow Successfully");
-            alert("Unfollow Successfully")
+            
 
         } catch (error) {
             console.log(`Error:- ${error}`);
@@ -169,9 +162,11 @@ const SavedPosts = () => {
     }
     // ------------ Saved tk ho gyi hain ----
     return (
-        <div className=" w-[80vw] h-screen flex flex-col justify-center items-center " >
-            <h1>Saved Posts</h1>
-            <div className='feed w-[80%] border flex gap-2 overflow-scroll ' >
+        <div 
+        className="w-[85vw] h-screen mx-auto flex flex-col justify-center items-center bg-[#ffffff] text-black" >
+            <h1 className="text-2xl uppercase font-semibold mb-6">Saved Posts</h1>
+            <div 
+            className="feed w-[80%] h-[80vh] flex flex-wrap gap-5 overflow-y-auto p-2" >
                 {saveposts?.map((post) => {
 
                     const isLiked = post.likes?.some(
@@ -184,11 +179,12 @@ const SavedPosts = () => {
                     return (
                         <div
                             key={post._id}
-                            className="bg-white w-[30%] h-90 flex flex-col rounded-xl shadow-md p-2"
+                            className="bg-[#FDEEE7] w-[31%] h-90 flex flex-col rounded-3xl   shadow-lg hover:border-orange-500 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                         >
 
                             {/* Header */}
-                            <div className='flex gap-2 p-2 justify-between items-center'>
+                            <div 
+                            className="flex justify-between items-center p-3  ">
 
                                 <span className='flex items-center gap-2'>
                                     {
@@ -196,13 +192,13 @@ const SavedPosts = () => {
                                             <img
                                                 src={post.user.image_url}
                                                 alt="userimage"
-                                                className="w-5 h-5 rounded-full "
+                                                className="w-9 h-9 rounded-full object-cover border border-gray-600"
                                             />
                                         ) : (
                                             <img
                                                 src={blankuser}
                                                 alt="userimage"
-                                                className="w-5 h-5 rounded-full "
+                                                className="w-9 h-9 rounded-full object-cover border border-gray-600"
                                             />
                                         )
                                     }
@@ -214,14 +210,14 @@ const SavedPosts = () => {
                                     isFollow ? (
                                         <button
                                             onClick={() => unfollowPost(post.user_id)}
-                                            className='flex items-center cursor-pointer  gap-1'>
+                                            className="px-3 text-white py-1 text-xs bg-gray-700 hover:bg-gray-600 rounded-lg transition-all cursor-pointer">
                                             Following
                                         </button>
                                     )
                                         : (
                                             <button
                                                 onClick={() => followpost(post.user_id)}
-                                                className='flex items-center cursor-pointer gap-1'>
+                                                className="px-3 py-1 text-white text-xs bg-blue-600 hover:bg-blue-700 rounded-lg transition-all cursor-pointer">
                                                 Follow
                                             </button>
                                         )
@@ -232,7 +228,7 @@ const SavedPosts = () => {
                             </div>
 
                             {/* Image */}
-                            <div className='w-full h-[80%] flex flex-col items-center'>
+                            <div className='w-full bg-[#FDEEE7] h-[80%] flex flex-col items-center'>
 
                                 {
                                     post.post_url.endsWith(".mp4") ? (
@@ -243,18 +239,20 @@ const SavedPosts = () => {
                                         <img
                                             src={post.post_url}
                                             alt="post"
-                                            className="w-full h-[70%] rounded-xl object-contain"
+                                            className="w-full h-[65%] object-cover"
                                         />
                                     )
                                 }
 
                                 {/* Actions */}
-                                <div className="p-4 w-full flex">
+                                <div 
+                                className="flex gap-5 px-4 py-2 text-black text-sm">
 
                                     <div className="flex gap-4 mt-2">
 
                                         {/* Like */}
-                                        <span className='flex justify-center cursor-pointer items-center gap-2'>
+                                        <span 
+                                        className="flex items-center gap-2 cursor-pointer hover:text-black transition-all">
 
                                             {
                                                 isLiked ? (
@@ -275,7 +273,8 @@ const SavedPosts = () => {
                                         {/* ---------- Like Box ------- */}
                                         {
                                             selectlikepost &&
-                                            <div className=' feed flex flex-col  fixed z-50 top-25 shadow-xl right-60 p-2 overflow-scroll bg-[#ffffff] w-[40%] h-[50%] rounded-2xl border ' >
+                                            <div 
+                                            className="text-black feed flex flex-col fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FDEEE7] w-[40%] h-[50%] rounded-3xl border border-gray-700 shadow-2xl p-4">
                                                 <button
                                                     onClick={() => setSelectlikepost(null)}
                                                     className=' self-end-safe text-2xl cursor-pointer ' ><RiCloseCircleFill /></button>
@@ -283,7 +282,8 @@ const SavedPosts = () => {
                                                     selectlikepost.likes.length === 0
                                                         ? <p>No Likes</p>
                                                         : selectlikepost.likes.map((like, index) => (
-                                                            <div key={index} className='  ' >
+                                                            <div key={index} 
+                                                            className="bg-[#FDEEE7] p-3 rounded-xl border border-gray-700 hover:border-orange-500 transition-all">
                                                                 <p className=' text-[1rem] font-semibold ' >{like.name}</p>
                                                                 <p className=' text-[0.9rem] ' >{like.username}</p>
                                                             </div>
@@ -302,7 +302,8 @@ const SavedPosts = () => {
                                         {/* ---- Show Comments Box ---- */}
                                         {
                                             selectcommentpost &&
-                                            <div className=' feed flex flex-col justify-between  fixed z-50 top-25 shadow-xl right-60 p-2 overflow-scroll bg-[#ffffff] w-[40%] h-[50%] rounded-2xl border ' >
+                                            <div
+                                            className="text-black feed flex flex-col justify-between fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-[#FDEEE7] w-[45%] h-[60%] rounded-3xl border border-gray-700 shadow-2xl p-4" >
                                                 <button
                                                     onClick={() => setSelectcommentpost(null)}
                                                     className=' self-end-safe text-2xl cursor-pointer ' ><RiCloseCircleFill /></button>
@@ -311,20 +312,21 @@ const SavedPosts = () => {
                                                         selectcommentpost.comments.length === 0
                                                             ? <p>No Comments</p>
                                                             : selectcommentpost.comments.map((comment, index) => (
-                                                                <div key={index} className='    ' >
+                                                                <div key={index} 
+                                                                className="bg-[#FDEEE7] p-3 rounded-xl border border-gray-700">
                                                                     <p className=' text-[1rem] font-semibold ' >{comment.name}</p>
                                                                     <span className=' flex  items-center gap-10 ' ><FaRegCommentDots /><p className=' text-[0.9rem] ' >{comment.comment}</p></span>
                                                                 </div>
                                                             ))
                                                     }
-                                                </div>
-                                                {/* =========== Comment baki hia ===== */}
+                                                </div> 
                                                 <div className=' justify-self-end flex justify-between items-center ' >
                                                     <input type="text" name='comment' placeholder='Add comment..........'
                                                         value={formdata.comment}
                                                         onChange={handlechange}
-                                                        className=' border w-[90%] p-1.5 rounded-2xl ' />
-                                                    <button className=' cursor-pointer  rounded-full text-4xl '
+                                                        className="flex items-center gap-2 mt-3 border-t border-gray-700 pt-3"/>
+                                                    <button 
+                                                    className="bg-blue-600 hover:bg-blue-700 p-2.5 rounded-xl transition-all hover:scale-105 cursor-pointer"
                                                         onClick={() => commentPost(selectcommentpost._id)}
                                                     ><BiSolidSend /></button>
                                                 </div>
@@ -336,12 +338,16 @@ const SavedPosts = () => {
                                 </div>
 
                                 {/* Caption + Date */}
-                                <div className='flex w-full justify-between'>
-                                    <p className="text-[0.8rem] line-clamp-1 ">
+                                <div 
+                                className="flex justify-between items-center px-4 py-2 text-sm">
+                                    <p 
+                                    className="line-clamp-1 text-black-200">
                                         {post.caption}
                                     </p>
 
-                                    <p>{datetime(post.createdAt)}</p>
+                                    <p
+                                    className="text-xs text-black-400"
+                                    >{datetime(post.createdAt)}</p>
                                 </div>
 
                             </div>

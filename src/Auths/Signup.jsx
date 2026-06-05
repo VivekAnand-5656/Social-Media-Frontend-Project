@@ -1,7 +1,10 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { HashLoader } from 'react-spinners'
+import { toast, Slide } from 'react-toastify'
 
 const Signup = () => {
+  const [loading, setLoading] = useState()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,14 +31,22 @@ const Signup = () => {
     }
 
     try {
+      setLoading(true)
       const response = await axios.post(
         `${apibase}/public/createUser`,
         payload
       )
-
-      console.log("Response:", response.data)
-
-      alert(`Account Created Successfully: ${response.data.message}`)
+      toast.success('☑️ Account Created Successfully', {
+        position: "bottom-right",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Slide,
+      });
 
       setFormData({
         name: "",
@@ -47,78 +58,109 @@ const Signup = () => {
 
     } catch (error) {
       console.log("Error:", error)
-
-      alert(
-        error?.response?.data?.detail ||
-        "Something went wrong"
-      )
+      toast.error('Something Wwnt wrong ❌!', {
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+              transition: Slide,
+            });
+       
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className='w-[80vw] h-screen flex justify-center items-center'>
-      <form
-        onSubmit={handleSignup}
-        className='w-[30%] flex flex-col gap-3'
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          required
-          value={formData.name}
-          onChange={handleChange}
-          className='border p-2'
-        />
+    <>
+      {
+        loading ? (
+          <div className=' w-[85vw] h-screen    bg-[#ffffff]  text-black   p-2 flex flex-col justify-center items-center  '  >
+            <div className=' w-[40%] h-[60%]    flex justify-center items-center  ' >
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className='border p-2'
-        />
 
-        <input
-          type="number"
-          name="mobile"
-          placeholder="Mobile"
-          required
-          value={formData.mobile}
-          onChange={handleChange}
-          className='border p-2'
-        />
+              <HashLoader
+                loading={true}
+                color='#F27734'
+                speedMultiplier={1}
+              />
+            </div>
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-          className='border p-2'
-        />
+        ) : (
+          <div className='w-[80vw] bg-[#ffffff] h-screen flex justify-center items-center'>
 
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          required
-          value={formData.username}
-          onChange={handleChange}
-          className='border p-2'
-        />
+            <form
+              onSubmit={handleSignup}
+              className='w-[40%] h-[80%] rounded-lg bg-[#F27734] flex flex-col justify-center items-center gap-4 '
+            >
+              <h1 className=' text-2xl font-bold uppercase ' >Sign Up</h1>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+              />
 
-        <button
-          type="submit"
-          className='cursor-pointer bg-[#069b0b] text-white p-2 rounded'
-        >
-          Create Account
-        </button>
-      </form>
-    </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+              />
+
+              <input
+                type="number"
+                name="mobile"
+                placeholder="Mobile"
+                required
+                value={formData.mobile}
+                onChange={handleChange}
+                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+              />
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+              />
+
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                required
+                value={formData.username}
+                onChange={handleChange}
+                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+              />
+
+              <button
+                type="submit"
+                className=' cursor-pointer bg-[#ffffff]     font-semibold  w-[50%]  rounded text-black hover:bg-[#fd5304] hover:text-white transition-all duration-500 ease-in-out   p-1.5 '
+              >
+                Create Account
+              </button>
+            </form>
+          </div>
+        )
+      }
+    </>
+
   )
 }
 
