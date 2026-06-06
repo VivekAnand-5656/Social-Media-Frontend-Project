@@ -79,10 +79,9 @@ const Signup = () => {
     <>
       {
         loading ? (
-          <div className=' w-[85vw] h-screen    bg-[#ffffff]  text-black   p-2 flex flex-col justify-center items-center  '  >
-            <div className=' w-[40%] h-[60%]    flex justify-center items-center  ' >
-
-
+          /* Responsive Loading Viewport Wrapper */
+          <div className='w-full min-h-screen bg-white p-4 flex flex-col justify-center items-center' >
+            <div className='flex justify-center items-center' >
               <HashLoader
                 loading={true}
                 color='#F27734'
@@ -92,13 +91,16 @@ const Signup = () => {
           </div>
 
         ) : (
-          <div className='w-[80vw] bg-[#ffffff] h-screen flex justify-center items-center'>
+          /* Responsive Signup Viewport Wrapper */
+          <div className='w-full min-h-screen bg-white flex items-center justify-center p-4'>
 
+            {/* Responsive Form Container Card */}
             <form
               onSubmit={handleSignup}
-              className='w-[40%] h-[80%] rounded-lg bg-[#F27734] flex flex-col justify-center items-center gap-4 '
+              className='w-full max-w-md bg-[#F27734] text-white rounded-2xl flex flex-col items-center gap-4 p-6 sm:p-10 shadow-xl'
             >
-              <h1 className=' text-2xl font-bold uppercase ' >Sign Up</h1>
+              <h1 className='text-2xl font-bold uppercase tracking-wider mb-2' >Sign Up</h1>
+              
               <input
                 type="text"
                 name="name"
@@ -106,7 +108,7 @@ const Signup = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+                className='bg-[#FDEEE7] w-full max-w-xs rounded text-black outline-none p-2'
               />
 
               <input
@@ -116,7 +118,7 @@ const Signup = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+                className='bg-[#FDEEE7] w-full max-w-xs rounded text-black outline-none p-2'
               />
 
               <input
@@ -126,7 +128,7 @@ const Signup = () => {
                 required
                 value={formData.mobile}
                 onChange={handleChange}
-                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+                className='bg-[#FDEEE7] w-full max-w-xs rounded text-black outline-none p-2'
               />
 
               <input
@@ -136,7 +138,7 @@ const Signup = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+                className='bg-[#FDEEE7] w-full max-w-xs rounded text-black outline-none p-2'
               />
 
               <input
@@ -146,12 +148,12 @@ const Signup = () => {
                 required
                 value={formData.username}
                 onChange={handleChange}
-                className=' bg-[#FDEEE7] w-[50%]  rounded text-black  outline-0 p-1.5 '
+                className='bg-[#FDEEE7] w-full max-w-xs rounded text-black outline-none p-2'
               />
 
               <button
                 type="submit"
-                className=' cursor-pointer bg-[#ffffff]     font-semibold  w-[50%]  rounded text-black hover:bg-[#fd5304] hover:text-white transition-all duration-500 ease-in-out   p-1.5 '
+                className='cursor-pointer bg-white font-semibold w-full max-w-xs rounded text-black hover:bg-[#fd5304] hover:text-white transition-all duration-500 ease-in-out p-2 mt-2 shadow-md'
               >
                 Create Account
               </button>
@@ -160,7 +162,6 @@ const Signup = () => {
         )
       }
     </>
-
   )
 }
 

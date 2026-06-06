@@ -6,12 +6,12 @@ import { toast, Slide } from "react-toastify";
 
 const CreatePost = () => {
     const { token } = useContext(AuthContext);
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState(false);
 
     const [caption, setCaption] = useState("");
     const [file, setFile] = useState(null);
 
-    const apibase = "https://socialmediaproject-6sl8.onrender.com"
+    const apibase = "https://socialmediaproject-6sl8.onrender.com";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +22,7 @@ const CreatePost = () => {
         }
 
         try {
-            setLoading(true)
+            setLoading(true);
             const formData = new FormData();
 
             formData.append("caption", caption);
@@ -67,82 +67,72 @@ const CreatePost = () => {
                 transition: Slide,
             });
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
     return (
-        <div className="h-screen w-[80vw] p-2 bg-[#ffffff] flex items-center justify-center ">
+        /* Fully responsive outer wrapper */
+        <div className="w-full min-h-screen p-4 bg-white flex items-center justify-center">
 
-            <div
-                className="w-[40%]  rounded-3xl border border-orange-400/30 bg-[#FDEEE7]/90 backdrop-blur-md p-8 shadow-[0_0_40px_#FDEEE7]">
+            {/* Fluid card container that scales beautifully */}
+            <div className="w-full max-w-md rounded-3xl border border-orange-400/30 bg-[#FDEEE7]/90 backdrop-blur-md p-6 sm:p-8 shadow-[0_0_40px_#FDEEE7]">
 
-                <h2 className="mb-1.5 text-center text-2xl font-bold text-black">
+                <h2 className="mb-4 text-center text-2xl font-bold text-black">
                     Create Post 🚀
                 </h2>
 
                 <form
                     onSubmit={handleSubmit}
-                    className="flex flex-col gap-3"
+                    className="flex flex-col gap-4"
                 >
                     {/* Caption Input */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-black">
+                        <label className="mb-1.5 block text-sm font-medium text-black">
                             Caption
                         </label>
-
                         <textarea
                             placeholder="What's on your mind?"
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
-                            rows={5}
-                            className="w-full resize-none rounded-2xl border border-orange-500/40 bg-[#FDEEE7] p-2 text-black outline-none transition-all duration-300 placeholder:text-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/40"
+                            rows={4}
+                            className="w-full resize-none rounded-2xl border border-orange-500/40 bg-[#FDEEE7] p-3 text-black outline-none transition-all duration-300 placeholder:text-orange-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/40"
                         />
                     </div>
 
                     {/* File Upload */}
                     <div>
-                        <label className="mb-2 block text-sm font-medium text-black">
+                        <label className="mb-1.5 block text-sm font-medium text-black">
                             Upload Image
                         </label>
-
                         <input
                             type="file"
                             accept=".jpg,.jpeg,.png"
                             onChange={(e) => setFile(e.target.files[0])}
-                            className="w-full cursor-pointer rounded-xl border border-dashed border-orange-500/50 bg-[#FDEEE7] p-2 text-black file:mr-4 file:rounded-lg file:border-0 file:bg-orange-600 file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:bg-orange-600"
+                            className="w-full cursor-pointer rounded-xl border border-dashed border-orange-500/50 bg-[#FDEEE7] p-2 text-black file:mr-4 file:rounded-lg file:border-0 file:bg-orange-600 file:px-4 file:py-2 file:text-white file:cursor-pointer hover:file:bg-orange-700"
                         />
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
-                        className="mt-2 rounded-2xl bg-[#ff5100] py-1.5 cursor-pointer text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 hover:shadow-blue-500/40"
+                        className="mt-2 w-full rounded-2xl bg-[#ff5100] py-2 cursor-pointer text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.01] hover:bg-[#e04700]"
                     >
                         Create Post
                     </button>
                 </form>
-                {/* ------- ---------- */}
-                {
-                    loading ? (
-                        <div
-                            className="w-full fixed top-0 right-0 text-white flex justify-center items-center h-screen  max-w-xl rounded-3xl border border-blue-400/30 bg-[#0D121A]/90 backdrop-blur-md p-8 shadow-[0_0_40px_rgba(59,130,246,0.25)]">
-                            <SquareLoader
-                                loading={true}
-                                color="#ffffff"
-                                speedMultiplier={1}
-                            />
-                        </div>
-
-                    ) : (
-                        <div
-                            className=" hidden fixed w-full max-w-xl rounded-3xl border border-blue-400/30 bg-[#0D121A]/90 backdrop-blur-md p-8 shadow-[0_0_40px_rgba(59,130,246,0.25)]">
-
-                        </div>
-                    )
-                }
-
             </div>
+
+            {/* Cleaned up loading screen that overlays matching the application theme */}
+            {loading && (
+                <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex justify-center items-center z-50">
+                    <SquareLoader
+                        loading={true}
+                        color="#ff5100"
+                        speedMultiplier={1}
+                    />
+                </div>
+            )}
         </div>
     );
 };
