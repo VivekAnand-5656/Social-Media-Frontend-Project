@@ -89,12 +89,12 @@ const Navbar = () => {
                                 <span>Home</span>
                             </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink to="/reels" className={getLinkClass} onClick={() => setIsOpen(false)}>
                                 <FcVideoCall className="text-xl" />
                                 <span>Reels</span>
                             </NavLink>
-                        </li>
+                        </li> */}
                         <li>
                             <NavLink to="/savedpost" className={getLinkClass} onClick={() => setIsOpen(false)}>
                                 <FaSave className="text-lg" />

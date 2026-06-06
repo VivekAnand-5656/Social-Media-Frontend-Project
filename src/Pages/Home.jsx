@@ -13,6 +13,8 @@ import { RiCloseCircleFill } from "react-icons/ri";
 import { BiSolidSend } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import { IoSaveSharp } from "react-icons/io5";
+import { FaUsers } from "react-icons/fa";
+
 
 import blankuser from '../assets/blankuser.png'
 import { PacmanLoader } from 'react-spinners'
@@ -237,7 +239,7 @@ const Home = () => {
           </div>
 
           {/* Call to Action Row */}
-          <div className="flex gap-2 w-full sm:w-auto">
+          <div className="flex justify-between gap-2 w-full sm:w-auto">
             <button 
               onClick={() => navigate("/createpost")} 
               className="flex-1 sm:flex-none px-4 h-11 bg-[#F27734] text-white text-sm font-semibold rounded-xl hover:bg-orange-600 transition-all cursor-pointer shadow-sm text-center whitespace-nowrap"
@@ -248,9 +250,9 @@ const Home = () => {
             {/* Toggle Button for Mobile RightBar Dashboard PopUp */}
             <button 
               onClick={() => setShowMobileRightBar(true)} 
-              className="lg:hidden flex-1 sm:flex-none px-4 h-11 bg-white text-gray-800 text-sm font-semibold rounded-xl border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer shadow-xs text-center whitespace-nowrap"
+              className="lg:hidden flex-1 sm:flex-none px-4 h-11 bg-white text-gray-800 text-sm font-semibold rounded-xl border border-gray-200 hover:bg-gray-100 transition-all cursor-pointer shadow-xs text-center   whitespace-nowrap"
             >
-              View Insights
+               👥
             </button>
           </div>
 
@@ -461,7 +463,7 @@ const Home = () => {
           
           <div className="relative w-[310px] sm:w-[360px] h-full bg-[#FDEEE7] shadow-2xl p-4 flex flex-col overflow-y-auto transform transition-transform duration-300 z-10">
             <div className="flex justify-between items-center mb-4 pb-2 border-b border-orange-200/60">
-              <h3 className="font-bold text-gray-900 text-base">Dashboard Insights</h3>
+              <h3 className="font-bold text-gray-900 text-base">Follow Suggestions</h3>
               <button onClick={() => setShowMobileRightBar(false)} className="text-2xl text-gray-400 hover:text-orange-600 transition-colors cursor-pointer">
                 <RiCloseCircleFill />
               </button>
